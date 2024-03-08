@@ -1,0 +1,6 @@
+RDS Fields,Fronius_Field_Name,Description,Type,Register Start Address,Register End Address,Register Size,Read/Write,Function Code
+der_name,Md,Device,string,40021,40036,16,R,0x03
+der_type,DERTyp,Type of DER device. Default value is 4 to indicate PV device.,enum16,40134,40134,1,R,0x03
+manufacturer_serial_number,SN,Serialnumber of the inverter,string,40053,40068,16,R,0x03
+manufacturer_info,Mn,Manufacturer,string,40005,40020,16,R,0x03
+latest_sw_version,Vr,SW version of inverter,string,40045,40052,8,R,0x03

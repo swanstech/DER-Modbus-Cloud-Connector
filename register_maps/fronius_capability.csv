@@ -1,0 +1,5 @@
+RDS Fields,Fronius_Field_Name,Description,Type,Register Start Address,Register End Address,Register Size,Read/Write,Function Code
+max_ac_current,ARtg,Maximum RMS AC current level capability of the inverter.,uint16,40144,40144,1,R,0x03
+max_apparent_power,VARtg,Continuous Volt-Ampere capability of the inverter.,uint16,40137,40137,1,R,0x03
+max_active_power_tx,WRtg,Continuous power output capability of the inverter.,uint16,40135,40135,1,R,0x03
+
