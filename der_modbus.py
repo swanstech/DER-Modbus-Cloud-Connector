@@ -32,8 +32,8 @@ class der_modbus:
         if count == None:
             count = (end_addr+1) - start_addr
         try:
-            data = client.read_holding_registers(start_addr, count)
-            return data
+            data = client.read_holding_registers(start_addr, count) 
+            return data 
         except Exception as e:
             print(f"Error Reading Register {start_addr}: {e}")
             return None
