@@ -1,5 +1,5 @@
 import sys
-from der_modbus import der_modbus 
+from der_modbus import der_modbus  
 from data_mapper import combined_df
 
 if len(sys.argv) < 3:
@@ -43,8 +43,8 @@ def main():
             der_client, der_connection = der_instance.modbus_tcp(ip_address, port_number)
         elif connection_type == "rtu":
             der_client, der_connection = der_instance.modbus_rtu(
-                # These are the required parameters but are not set to their required values
                     ''' 
+                        These parameters required but are not fixed to the accurate values
                         port_number,
                         baudrate=der_data.get("baudrate", 9600),
                         parity=der_data.get("parity", 'N'),
