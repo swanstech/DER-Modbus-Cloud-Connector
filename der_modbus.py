@@ -34,6 +34,7 @@ class der_modbus:
             count = 1  # Defaulting to reading 1 register, adjust as needed.
         try:
             result = client.read_holding_registers(start_addr, count)
+            print(f"Result Value is: {result}")
             if not result.isError():
                 return result.registers
             else:
