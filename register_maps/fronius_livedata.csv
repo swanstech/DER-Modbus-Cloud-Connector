@@ -1,0 +1,21 @@
+Fronius_Field_Name,Description,Type,Register Start Address,Register End Address,Register Size,Read/Write,Function Code
+AC Current,AC Current,uint16,40072,40073,2,R,0x3
+Phase A Current,Phase A Current,uint16,40074,40075,2,R,0x3
+Phase B Current,Phase B Current,uint16,40076,40077,2,R,0x3
+Phase C Current,Phase C Current,uint16,40078,40079,2,R,0x3
+Phase Voltage AB,Phase Voltage AB,uint16,40080,40081,2,R,0x3
+Phase Voltage BC,Phase Voltage BC,uint16,40082,40083,2,R,0x3
+Phase Voltage CA,Phase Voltage CA,uint16,40084,40085,2,R,0x3
+Phase Voltage AN,Phase Voltage AN,uint16,40086,40087,2,R,0x3
+Phase Voltage BN,Phase Voltage BN,uint16,40088,40089,2,R,0x3
+Phase Voltage CN,Phase Voltage CN,uint16,40090,40091,2,R,0x3
+AC Power,AC Power,int16,40092,40093,2,R,0x3
+Line Frequency,Line Frequency,uint16,40094,40095,2,R,0x3
+AC Apparent Power,AC Apparent Power,int16,40096,40097,2,R,0x3
+AC Reactive Power,AC Reactive Power,int16,40098,40099,2,R,0x3
+AC Power Factor,AC Power Factor,int16,40100,40101,2,R,0x3
+AC Energy,AC Energy,acc32,40102,40103,2,R,0x3
+DC Current,DC Current,uint16,40104,40105,2,R,0x3
+DC Voltage,DC Voltage,uint16,40106,40107,2,R,0x3
+DC Power,DC Power,int16,40108,40109,2,R,0x3
+Cabinet Temperature,Cabinet Temperature,int16,40110,40111,2,R,0x3

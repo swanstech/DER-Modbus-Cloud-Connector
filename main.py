@@ -1,20 +1,28 @@
-from der_modbus import der_modbus  # Ensure this is the correct import statement
+import sys
+from der_modbus import der_modbus 
 from data_mapper import combined_df
 
-# Example connection settings (replace with actual values)
+if len(sys.argv) < 3:
+    print("Usage: script.py ip_address port_number")
+    sys.exit(1)
+
+ip_address = sys.argv[1]
+port_number = int(sys.argv[2])
+
+# Example connection settings (now using command-line arguments)
 connection_settings = {
     "connection_type": "tcp",
-    "ipaddress": "x.y.z.a",
-    "port_number": 502,
+    "ipaddress": ip_address,
+    "port_number": port_number,
 }
 
 def read_registers_based_on_df(der_instance, client):
-    for _ , row in combined_df.iterrows():
+    for _, row in combined_df.iterrows():
         start_address = row['Register Start Address']
         count = row["Register Size"]
         if not count:
             # Assuming 'Size' needs to be calculated as 'End Address' - 'Start Address' + 1
-            row['Register End Address'] - start_address + 1
+            count = row['Register End Address'] - start_address + 1
 
         # Reading data using the der_modbus instance
         data = der_instance.read_registers(client, start_address, count=count)
@@ -45,7 +53,6 @@ def main():
                         meter_addr=der_data.get("meter_addr", 1)
                     '''
             )
-            pass
         else:
             print(f"Unsupported Communication Type: {connection_type}")
             return
@@ -62,7 +69,7 @@ def main():
         print(f"An error occurred: {e}")
 
     finally:
-        if der_connection:
+        if 'der_connection' in locals() and der_connection:
             try:
                 der_client.close()
                 print("Connection closed.")
