@@ -21,13 +21,14 @@ def read_registers_based_on_df(der_instance, client):
         start_address = row['Register Start Address']
         count = row["Register Size"]
         if not count:
-            # Assuming 'Size' needs to be calculated as 'End Address' - 'Start Address' + 1
+            # 'Size' needs to be calculated as 'End Address' - 'Start Address' + 1
             count = row['Register End Address'] - start_address + 1
 
         # Reading data using the der_modbus instance
         data = der_instance.read_registers(client, start_address, count=count)
         if data is not None:
-            print(f"Data from {row['RDS Fields']}: {data.registers}")
+            # The data has to be converted/decoded based on their datatype
+            print(f"Data from {row['RDS Fields']}: {data}")
         else:
             print(f"Failed to read data for {row['RDS Fields']}")
 
