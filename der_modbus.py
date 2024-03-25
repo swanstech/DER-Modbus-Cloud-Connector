@@ -1,4 +1,4 @@
-from pymodbus.client.sync import ModbusTcpClient, ModbusSerialClient
+from pymodbus import ModbusTcpClient, ModbusSerialClient
 
 class der_modbus:
     def __init__(self):
