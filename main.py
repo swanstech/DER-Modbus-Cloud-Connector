@@ -47,8 +47,10 @@ def read_and_decode_registers(client, df):
         data_type = row['Type']
         count = row.get('Register Size', row['Register End Address'] - start_address + 1)
 
+        # Remove the below function and use der_modbus.py read registers function
         result = client.read_holding_registers(start_address-1, count, unit=1)
         if not result.isError():
+            # Add the decode logic from the provided GitHub Link
             decoded_data = decode_data(result.registers, data_type)
             print(f"Decoded Data from {row['RDS Fields']} ({data_type}): {decoded_data}")
         else:
