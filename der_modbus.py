@@ -15,16 +15,18 @@ class der_modbus:
             print(f"Error Connecting to Modbus TCP: {e}")
             return None, False
             
-    # Modbus RTU Connection
-    # def modbus_rtu(self, port, baudrate, parity, bytesize=8, stopbits=1, meter_addr=1):
-    #     client = ModbusSerialClient(method='rtu', port=port, baudrate=baudrate, 
-    #                                 bytesize=bytesize, stopbits=stopbits, parity=parity, timeout=3)
-    #     try:
-    #         connection = client.connect()
-    #         return client, connection
-    #     except Exception as e:
-    #         print(f"Error Connecting to Modbus RTU: {e}")
-    #         return None, False
+    """
+    Modbus RTU Connection
+    def modbus_rtu(self, port, baudrate, parity, bytesize=8, stopbits=1, meter_addr=1):
+        client = ModbusSerialClient(method='rtu', port=port, baudrate=baudrate, 
+                                    bytesize=bytesize, stopbits=stopbits, parity=parity, timeout=3)
+        try:
+            connection = client.connect()
+            return client, connection
+        except Exception as e:
+            print(f"Error Connecting to Modbus RTU: {e}")
+            return None, False
+    """
     
     # Reading the Registers
     def read_registers(self, client, start_addr, end_addr=None, count=None):

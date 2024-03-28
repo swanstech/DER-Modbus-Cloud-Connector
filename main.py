@@ -16,21 +16,46 @@ connection_settings = {
     "port_number": port_number,
 }
 
-def read_registers_based_on_df(der_instance, client):
-    for _, row in combined_df.iterrows():
-        start_address = row['Register Start Address']
-        count = row["Register Size"]
-        if not count:
-            # 'Size' needs to be calculated as 'End Address' - 'Start Address' + 1
-            count = row['Register End Address'] - start_address + 1
+""" Decode the string types """
+def decode_string(registers):
+    result = ""
+    for reg in registers:
+        char1 = chr(reg >> 8)
+        char2 = chr(reg & 0xFF)
+        result += char1 + char2
+    return result.rstrip('\x00')
 
-        # Reading data using the der_modbus instance
-        data = der_instance.read_registers(client, start_address, count=count)
-        if data is not None:
-            # The data has to be converted/decoded based on their datatype
-            print(f"Data from {row['RDS Fields']}: {data}")
+""" Decode the uint16 data types """
+def decode_uint16(registers):
+    return registers[0] if registers else None
+
+""" Decode the int16 data types """
+def decode_int16(register):
+    return register - 65536 if register > 32767 else register
+
+""" Read the register values """
+def read_registers_based_on_df(der_instance, client, df):
+    for _, row in df.iterrows():
+        start_address = row['Register Start Address']
+        count = row['Register Size'] if df.notnull(row['Register Size']) else row['Register End Address'] - start_address + 1
+        data_type = row['Type']
+        rds_field = row['RDS Fields']
+
+        raw_data = der_instance.read_registers(client, start_address, count)
+        if raw_data is not None:
+            if data_type == 'string':
+                decoded_data = decode_string(raw_data)
+            elif data_type == 'uint16':
+                decoded_data = decode_uint16(raw_data)
+            elif data_type in ['int16', 'enum16']:
+                decoded_data = [decode_int16(reg) for reg in raw_data]
+            else:
+                decoded_data = raw_data
+
+            print(f"Decoded Data from {rds_field} ({data_type}): {decoded_data}")
         else:
-            print(f"Failed to read data for {row['RDS Fields']}")
+            print(f"Failed to read data for {rds_field}")
+
 
 def main():
     der_instance = der_modbus()
@@ -57,7 +82,7 @@ def main():
         else:
             print(f"Unsupported Communication Type: {connection_type}")
             return
-            
+
         # Check if the connection is established
         if der_connection:
             print(f"Succesfully Connected to the DER: {ip_address} on the Port: {port_number}")

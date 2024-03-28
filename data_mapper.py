@@ -4,7 +4,7 @@ import os
 print("Current Working Directory: ", os.getcwd())
 
 
-csv_files = ['./register_maps/fronius_information.csv', './register_maps/fronius_capability.csv', './register_maps/fronius_settings.csv', './register_maps/fronius_livedata.csv']
+csv_files = ['./register_maps/fronius_livedata.csv']
 
 #Read each CSV file into a DataFrame and store them in a list
 dataframes = [pd.read_csv(file) for file in csv_files]
