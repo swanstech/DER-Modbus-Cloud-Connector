@@ -1,6 +1,7 @@
 import sys
 from der_modbus import der_modbus  
 from data_mapper import combined_df
+import pandas as pd
 
 if len(sys.argv) < 3:
     print("Usage: script.py ip_address port_number")
@@ -16,28 +17,28 @@ connection_settings = {
     "port_number": port_number,
 }
 
-""" Decode the string types """
+"""Decode string types from register values."""
 def decode_string(registers):
     result = ""
     for reg in registers:
-        char1 = chr(reg >> 8)
-        char2 = chr(reg & 0xFF)
+        char1 = chr(reg >> 8)  
+        char2 = chr(reg & 0xFF)  
         result += char1 + char2
     return result.rstrip('\x00')
 
-""" Decode the uint16 data types """
+"""Decode uint16 data types from register values."""
 def decode_uint16(registers):
     return registers[0] if registers else None
 
-""" Decode the int16 data types """
+"""Decode int16 data types from register values."""
 def decode_int16(register):
     return register - 65536 if register > 32767 else register
 
-""" Read the register values """
+"""Read and decode registers based on DataFrame configuration."""
 def read_registers_based_on_df(der_instance, client, df):
     for _, row in df.iterrows():
         start_address = row['Register Start Address']
-        count = row['Register Size'] if df.notnull(row['Register Size']) else row['Register End Address'] - start_address + 1
+        count = row['Register Size'] if pd.notnull(row['Register Size']) else row['Register End Address'] - start_address + 1
         data_type = row['Type']
         rds_field = row['RDS Fields']
 
@@ -50,7 +51,7 @@ def read_registers_based_on_df(der_instance, client, df):
             elif data_type in ['int16', 'enum16']:
                 decoded_data = [decode_int16(reg) for reg in raw_data]
             else:
-                decoded_data = raw_data
+                decoded_data = raw_data  # Fallback for data types not explicitly handled
 
             print(f"Decoded Data from {rds_field} ({data_type}): {decoded_data}")
         else:
@@ -63,7 +64,6 @@ def main():
     ip_address = connection_settings["ipaddress"]
     port_number = connection_settings["port_number"]
 
-    # Determine the Connection Type Required
     try:
         if connection_type == "tcp":
             der_client, der_connection = der_instance.modbus_tcp(ip_address, port_number)
@@ -86,7 +86,7 @@ def main():
         # Check if the connection is established
         if der_connection:
             print(f"Succesfully Connected to the DER: {ip_address} on the Port: {port_number}")
-            read_registers_based_on_df(der_instance, der_client)
+            read_registers_based_on_df(der_instance, der_client, combined_df)
             der_client.close()
         else:
             print(f"Failed to Connected to the DER: {ip_address} on the Port: {port_number}")
